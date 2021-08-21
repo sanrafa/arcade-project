@@ -5,4 +5,15 @@ div > div {
     display: inline-block;
 }
 
+#A, #B, #C {
+    background-color: red;
+}
+
+#D, #E, #F {
+    background-color: blue;
+}
+
+#G, #H, #I {
+    background-color: green;
+}
 

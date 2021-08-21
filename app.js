@@ -68,6 +68,7 @@ function makeMove (player, cellId) {
 }
 
 //could call func multiple times as test suite
-makeMove(game.players.player2, 'H');
+/* makeMove(game.players.player2, 'H');
 
-makeMove(game.players.player1, 'A');
+makeMove(game.players.player1, 'A'); */
+
