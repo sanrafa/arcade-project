@@ -1,74 +1,250 @@
-const game = {
+let gameState = {
     players: {
-        player1: 'X',
-        player2: 'O'
+        numOfPlayers: 0,
+        player1: null,
+        player2: null
     },
-    firstPlayer: function () {
-        let i = Math.round(Math.random());
-        if (i === 0) return game.players.player1;
-        else return game.players.player2;
-    },
-    playerX: undefined,
+    firstPlayer: null,
+    currentTurn : 0,
+    currentPlayer: null,
+    winner: null,
     board: [
         [null, null, null],
         [null, null, null],
         [null, null, null]
-    ]
+    ],
 };
 
-// game.board = [
-//     ['X', 'O', 'X'],
-//     ['O', 'X', 'X'],
-//     ['O', 'O', 'O']
-// ]
+gameState.players.numOfPlayers = 2;
 
-//DETERMINE WHO GOES FIRST
-/* const goesFirst = game.firstPlayer();
-game.playerX = goesFirst; */
+inputPlayerNames(1, 'test');
+inputPlayerNames(2, 'test2');
+whoGoesFirst();
+beginTurn();
 
-function makeMove (player, cellId) {
-    // board will be HTML table, each cell with id corresponding to letters A-I
-    // when player clicks cell, that cellId is space entered in function
-    // i.e. - makeMove (playerX, A)
-    let symbol;
-    if (player === 'X') symbol = 'X';
-    else symbol = 'O';
-    console.log(symbol);
-    // insert checker if cell is occupied
-    switch (cellId) { // switch updates cell according to id
-        case 'A':
-            game.board[0][0] = symbol;
-            break;
-        case 'B':
-            game.board[0][1] = symbol;
-            break;
-        case 'C':
-            game.board[0][2] = symbol;
-            break;
-        case 'D':
-            game.board[1][0] = symbol;
-            break;
-        case 'E':
-            game.board[1][1] = symbol;
-            break;
-        case 'F':
-            game.board[1][2] = symbol;
-            break;
-        case 'G':
-            game.board[2][0] = symbol;
-            break;
-        case 'H':
-            game.board[2][1] = symbol;
-            break;
-        case 'I':
-            game.board[2][2] = symbol;
-            break;
-    }
-  console.log(game.board);  
+//  EVENT LISTENERS
+
+let cellA = document.getElementById('A');
+let cellB = document.getElementById('B');
+let cellC = document.getElementById('C');
+let cellD = document.getElementById('D');
+let cellE = document.getElementById('E');
+let cellF = document.getElementById('F');
+let cellG = document.getElementById('G');
+let cellH = document.getElementById('H');
+let cellI = document.getElementById('I');
+
+
+
+cellA.addEventListener('click', placePiece);
+cellB.addEventListener('click', placePiece);
+cellC.addEventListener('click', placePiece);
+cellD.addEventListener('click', placePiece);
+cellE.addEventListener('click', placePiece);
+cellF.addEventListener('click', placePiece);
+cellG.addEventListener('click', placePiece);
+cellH.addEventListener('click', placePiece);
+cellI.addEventListener('click', placePiece);
+
+// function testClick () {
+//     console.log('hello');
+// }
+
+// GAME FUNCTIONS
+async function placePiece () {
+    let target = event.target;
+    let cellId = target.getAttribute('id');
+    await makeMove(cellId);
+    document.getElementById(cellId).innerText = gameState.currentPlayer;
+    console.log(gameState.board);
+    await checkGameState();
+    beginTurn ();
 }
 
-//could call func multiple times as test suite
-/* makeMove(game.players.player2, 'H');
+async function checkGameState () {
+    await checkRows();
+    await checkColumns();
+    await checkDiags();
+    if (gameState.currentTurn === 9 && gameState.winner === null) {
+        console.log("It's a draw!");
+        return;
+    } else if (gameState.winner !== null) {
+        let winner = declareWinner(gameState.winner);
+        console.log(`Player ${winner} has won!`);
+        // call endGame function here
+    }
+}
 
-makeMove(game.players.player1, 'A'); */
+function declareWinner (winner) { // temporary... refactor gameState to track X and O under players' names
+    if (winner === 'O') {
+        return 'O';
+    } else { return 'X' };
+}
+
+
+function inputPlayerNames (player, name) {
+    gameState.players['player' + player] = name;
+    if (gameState.players.numOfPlayers === 1) {
+        gameState.players.player2 = 'Computer';
+    }
+}
+
+function whoGoesFirst () {
+    let first = Math.round(Math.random());
+    if (first === 0) {
+        gameState.firstPlayer = gameState.players.player1;
+    } else if (first === 1) {
+        gameState.firstPlayer = gameState.players.player2;
+    }
+}
+
+function beginTurn () {
+    if (gameState.currentTurn < 9) {
+        gameState.currentTurn += 1;
+    } else { throw new Error ('The game has ended')};
+    if (gameState.currentTurn % 2 === 0) {
+        gameState.currentPlayer = 'O';
+    } else { gameState.currentPlayer = 'X'};
+    console.log(gameState);
+}
+
+function makeMove (cell) {
+    // in real game cell = event.target.id
+    const symbol = gameState.currentPlayer;
+    switch (cell) { // switch updates cell according to id
+        case 'A':
+            if (gameState.board[0][0] === null) {
+                gameState.board[0][0] = symbol;
+            } else {
+                throw new Error ('That cell is occupied!');
+            }
+            break;
+        case 'B':
+            if (gameState.board[0][1] === null) {
+                gameState.board[0][1] = symbol;
+            } else {
+                throw new Error ('That cell is occupied!');
+            }
+            break;
+        case 'C':
+            if (gameState.board[0][2] === null) {
+                gameState.board[0][2] = symbol;
+            } else {
+                throw new Error ('That cell is occupied!');
+            }
+            break;
+        case 'D':
+            if (gameState.board[1][0] === null) {
+                gameState.board[1][0] = symbol;
+            } else {
+                throw new Error ('That cell is occupied!');
+            }
+            break;
+        case 'E':
+            if (gameState.board[1][1] === null) {
+                gameState.board[1][1] = symbol;
+            } else {
+                throw new Error ('That cell is occupied!');
+            }
+            break;
+        case 'F':
+            if (gameState.board[1][2] === null) {
+                gameState.board[1][2] = symbol;
+            } else {
+                throw new Error ('That cell is occupied!');
+            }
+            break;
+        case 'G':
+            if (gameState.board[2][0] === null) {
+                gameState.board[2][0] = symbol;
+            } else {
+                throw new Error ('That cell is occupied!');
+            }
+            break;
+        case 'H':
+            if (gameState.board[2][1] === null) {
+                gameState.board[2][1] = symbol;
+            } else {
+                throw new Error ('That cell is occupied!');
+            }
+            break;
+        case 'I':
+            if (gameState.board[2][2] === null) {
+                gameState.board[2][2] = symbol;
+            } else {
+                throw new Error ('That cell is occupied!');
+            }
+            break;
+    }
+}
+
+function checkRows () {
+    let player = gameState.currentPlayer;
+    for (let i = 0; i < 3; i++) {
+        let counter = 0;
+        for (let cell of gameState.board[i]) {
+            if (cell === player) {
+                counter++;
+                continue;
+            }
+        }
+        if (counter === 3) {
+            gameState.winner = player;
+            console.log(`Player ${player} has won!`);
+            return;
+        }
+    }
+    console.log('No winner yet');
+    return;
+}
+
+function checkColumns () {
+    let player = gameState.currentPlayer;
+    for (let i = 0; i < 3; i++) {
+        let counter = 0;
+        for (let j = 0; j < 3; j++) { //board[j][i]
+            if (gameState.board[j][i] === player) {
+                counter++;
+                continue;
+            }
+        }
+        if (counter === 3) {
+            gameState.winner = player;
+            console.log(`Player ${player} has won!`);
+            return;
+        }
+    }
+    console.log('No winner yet');
+    return;
+}
+
+function checkDiags () {
+    let player = gameState.currentPlayer;
+    let counter = 0;
+    for (let i = 0; i < 3; i++) {
+        if (gameState.board[i][i] === player) { //check diagonal from left
+            counter++;
+            continue;
+        }
+    }
+    if (counter === 3) {
+        gameState.winner = player;
+        console.log(`Player ${player} has won!`);
+        return;
+    } else {
+        if ( //check diagonal from right
+            gameState.board[0][2] === player &&
+            gameState.board[1][1] === player &&
+            gameState.board[2][0] === player
+        ) {
+            gameState.winner = player;
+            console.log(`Player ${player} has won!`);
+            return;
+        } else {
+            console.log('No winner yet');
+            return;
+        }  
+    }
+}
+
 

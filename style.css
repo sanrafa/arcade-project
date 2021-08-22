@@ -1,8 +1,19 @@
-div > div {
+main {
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr; 
+    grid-template-rows: 1fr 1fr 1fr; 
+    gap: 0px 0px; 
+    grid-template-areas: 
+    "A B C"
+    "D E F"
+    "G H I"; 
+}
+
+div {
+    padding: 3rem;
     border: 1px solid black;
-    width: 13vw;
-    height: 13vw;
-    display: inline-block;
+    min-height: 120px;
+    min-width: 120px;
 }
 
 #A, #B, #C {
@@ -17,3 +28,30 @@ div > div {
     background-color: green;
 }
 
+#A {
+    grid-area: A;
+}
+#B {
+    grid-area: B;
+}
+#C {
+    grid-area: C;
+}
+#D {
+    grid-area: D;
+}
+#E {
+    grid-area: E;
+}
+#F {
+    grid-area: F;
+}
+#G {
+    grid-area: G;
+}
+#H {
+    grid-area: H;
+}
+#I {
+    grid-area: I;
+}

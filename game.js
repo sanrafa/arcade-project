@@ -114,7 +114,7 @@ function makeMove (cell) {
     }
 }
 
-// TODO - refactor output of game checkers
+
 
 function checkRows () {
     let player = gameState.currentPlayer;
@@ -240,55 +240,4 @@ checkGameState();
 console.log(gameState);
 
 //EVENT LISTENERS
-
-
-
-// ********** GAME FLOW **********
-
-// STAGE ONE
-// inputPlayerNames
-/* 
-    - if 2 players selected, players are prompted to enter their names.
-    - if 1 player, 'Computer' is always player 2
-    - names assigned to gameState.players.player1 & gameState.players.player2
-*/
-
-// whoGoesFirst
-/* 
-    - use Math.round(Math.random()) to choose randomly between 0 and 1
-    - if 0 => Player 1; if 1 => Player 2
-    - gameState.firstPlayer = result
-*/
-
-//--------------------------------
-
-//STAGE TWO
-
-// beginTurn
-/* 
-    - currentTurn++; 9 turns total
-    - if currentTurn is odd, X; if even, O
-    - update currentPlayer with X or O
-*/
-
-// makeMove
-/* 
-    - symbol = currentPlayer
-    - take player input, i.e. ID of clicked cell
-    --- if gameState.board[][] != null, throw error, restart at same iteration
-    - update gameState.board with that symbol
-    - update HTML to hold that symbol at cell
-    - run beginTurn
-*/
-//--------------------------------
-
-//STAGE THREE
-
-// checkGameState
-/* 
-    three helpers: checkRows, checkColumns, checkDiags
-    - at end of each turn, checkGameState sees if winning move has been made
-        - if so, return dialog `[player] has won!` 
-    - after 9th turn, if no win achieved, return `It's a draw`
-*/
 
