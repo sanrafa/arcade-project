@@ -17,36 +17,13 @@
 - Computer must make moves in a way that resembles a human player
 
 ----
-
-## Game State
-
-```
-const game = {
-    players: [x, o] // add name input method later
-    firstPlayer: game.players[idx] // idx = Math.round(Math.random());
-    currentPlayer: // each turn, game.players[idx + 1 OR idx - 1]
-    board: [
-        [null, null, null],
-        [null, null, null],
-        [null, null, null]
-    ]
-    /* 
-    game.board[0 ... 2] = rows
-    game.board[row][0 ... 2] = columns
-    {game.board[0][0], game.board[1][1], game.board[2][2]}
-    or
-    {game.board[0][2], game.board[1][1], game.board[2][0]} = diagonals
-    */ 
-
-}
-```
-
-#### Items to track
+### Items to track
 - Players
     - how many (1 or 2)
     - names
     - who goes first
     - whose turn it is
+    - who is the winner
 - Board
     - which spaces are empty
     - which spaces are *occupied* and by which players
@@ -58,3 +35,42 @@ const game = {
     - who is active player
     - what is current board state
     - endgame notification
+
+    ----
+    # Functions
+
+    ### inputPlayerNames(player, name)
+    - if 2 players selected, run twice; 1 player - run once
+    - *player* param refers to player # (1 or 2)
+    - *name* param refers to player input from form
+    - if only 1 player, Player 2 is named 'Computer'
+    - this is recorded to *gameState.players* object
+    - **DOM interaction:**
+
+    ### whoGoesFirst()
+    - generate 1 or 0 randomly
+    - if 0, 'Player 1' goes first and is assigned X
+    - if 1, 'Player 2' goes first and is assigned X
+    - resultant player is recorded to gameState.firstPlayer
+    - **DOM interaction:**
+
+    ### beginTurn()
+    - only run if less than 9 turns have been played
+        - **NOTE** change error thrown into separate endGame function; refactor other funcs accordingly
+    - gameState.currentTurn tracks # of turns played; iterate each turn
+    - if .currentTurn is odd, it is X's turn
+    - if .currentTurn is even, it is O's turn
+        - recorded in gameState.currentPlayer
+
+    ### makeMove(cell) *work-in-progress*
+    - **requires refactoring:** *cell* param should be #id of cell player clicks
+    - use gameState.currentPlayer to track appropriate symbol
+    - switch updates cell in gameState.board
+        - if cell is already occupied, throw error
+    
+    ### checkGameState()
+    - checkRows() - check each row for a win, update gameState.winner if so
+    - checkColumns() - same but columns
+    - checkDiags() - same but diagonals, left & right
+    - if it's end of final turn and no winner declared, it's a draw
+    - **possible refactoring:** carry output into separate endGame function
