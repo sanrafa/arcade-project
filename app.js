@@ -4,7 +4,8 @@ let gameState = {
         player1: null,
         player2: null
     },
-    firstPlayer: null,
+    playerX: null,
+    playerO: null,
     currentTurn : 0,
     currentPlayer: null,
     winner: null,
@@ -51,34 +52,45 @@ cellI.addEventListener('click', placePiece);
 // }
 
 // GAME FUNCTIONS
-async function placePiece () {
+function placePiece () {
     let target = event.target;
     let cellId = target.getAttribute('id');
-    await makeMove(cellId);
+    makeMove(cellId);
     document.getElementById(cellId).innerText = gameState.currentPlayer;
-    console.log(gameState.board);
-    await checkGameState();
-    beginTurn ();
-}
-
-async function checkGameState () {
-    await checkRows();
-    await checkColumns();
-    await checkDiags();
-    if (gameState.currentTurn === 9 && gameState.winner === null) {
-        console.log("It's a draw!");
-        return;
-    } else if (gameState.winner !== null) {
-        let winner = declareWinner(gameState.winner);
-        console.log(`Player ${winner} has won!`);
-        // call endGame function here
+    checkGameState();
+    if (gameState.currentTurn < 9) {
+        beginTurn();
     }
 }
 
-function declareWinner (winner) { // temporary... refactor gameState to track X and O under players' names
-    if (winner === 'O') {
-        return 'O';
-    } else { return 'X' };
+function checkGameState () {
+    checkRows();
+    checkColumns();
+    checkDiags();
+    if (gameState.currentTurn === 9 || gameState.winner !== null) {
+        endGame();
+    } else {
+        return;
+    }
+}
+
+function declareWinner (winner) { 
+    if (winner === 'X') {
+        gameState.winner = gameState.playerX;
+    } else if (winner === 'O') {
+        gameState.winner = gameState.playerO;
+    }
+}
+
+function endGame () {
+    declareWinner(gameState.winner);
+    let winner = gameState.winner;
+    document.getElementById('board').style.visibility = 'hidden';
+    if (winner !== null) {
+        document.querySelector('h1').innerText = `${winner} has won the game!`;
+    } else {
+        document.querySelector('h1').innerText = "Uh oh - there's a draw!";
+    }
 }
 
 
@@ -92,9 +104,9 @@ function inputPlayerNames (player, name) {
 function whoGoesFirst () {
     let first = Math.round(Math.random());
     if (first === 0) {
-        gameState.firstPlayer = gameState.players.player1;
+        gameState.playerX = gameState.players.player1;
     } else if (first === 1) {
-        gameState.firstPlayer = gameState.players.player2;
+        gameState.playerX = gameState.players.player2;
     }
 }
 
@@ -105,7 +117,6 @@ function beginTurn () {
     if (gameState.currentTurn % 2 === 0) {
         gameState.currentPlayer = 'O';
     } else { gameState.currentPlayer = 'X'};
-    console.log(gameState);
 }
 
 function makeMove (cell) {
