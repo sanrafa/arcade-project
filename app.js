@@ -18,10 +18,10 @@ let gameState = {
 
 gameState.players.numOfPlayers = 2;
 
-inputPlayerNames(1, 'test');
-inputPlayerNames(2, 'test2');
-whoGoesFirst();
-beginTurn();
+// inputPlayerNames(1, 'test');
+// inputPlayerNames(2, 'test2');
+// whoGoesFirst();
+// beginTurn();
 
 //  EVENT LISTENERS
 
@@ -50,11 +50,26 @@ cellI.addEventListener('click', placePiece);
 let newGameBtn = document.getElementById('new-game');
 newGameBtn.addEventListener('click', newGame);
 
+let startGameBtn = document.getElementById('ready');
+startGameBtn.addEventListener('click', submitNames);
+
 // function testClick () {
 //     console.log('hello');
 // }
 
 // GAME FUNCTIONS
+
+function submitNames () {
+    let player1Name = document.getElementById('player1-name').value;
+    let player2Name = document.getElementById('player2-name').value;
+    console.log(player1Name, player2Name);
+    inputPlayerNames(1, player1Name);
+    inputPlayerNames(2, player2Name);
+    whoGoesFirst();
+    beginTurn();
+    console.log(gameState);
+    document.getElementById('name-submit').style.display = 'none';
+}
 
 function newGame () {
     let cells = document.getElementsByClassName('cell');
@@ -63,25 +78,16 @@ function newGame () {
     }
     document.querySelector('h1').innerText = 'Tic Tac Toe';
     document.getElementById('board').style.visibility = 'visible';
-    gameState = {
-        players: {
-            numOfPlayers: 0,
-            player1: null,
-            player2: null
-        },
-        playerX: null,
-        playerO: null,
-        currentTurn : 0,
-        currentPlayer: null,
-        winner: null,
-        board: [
-            [null, null, null],
-            [null, null, null],
-            [null, null, null]
-        ],
-    };
-    inputPlayerNames(1, 'test');
-    inputPlayerNames(2, 'test2');
+    gameState.playerO = null;
+    gameState.playerX = null;
+    gameState.currentTurn = 0;
+    gameState.currentPlayer = null;
+    gameState.winner = null;
+    gameState.board = [
+        [null, null, null],
+        [null, null, null],
+        [null, null, null]
+    ];
     whoGoesFirst();
     beginTurn();
 }
