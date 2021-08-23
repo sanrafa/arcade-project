@@ -47,11 +47,45 @@ cellG.addEventListener('click', placePiece);
 cellH.addEventListener('click', placePiece);
 cellI.addEventListener('click', placePiece);
 
+let newGameBtn = document.getElementById('new-game');
+newGameBtn.addEventListener('click', newGame);
+
 // function testClick () {
 //     console.log('hello');
 // }
 
 // GAME FUNCTIONS
+
+function newGame () {
+    let cells = document.getElementsByClassName('cell');
+    for (let cell of cells) {
+        cell.innerText = '';
+    }
+    document.querySelector('h1').innerText = 'Tic Tac Toe';
+    document.getElementById('board').style.visibility = 'visible';
+    gameState = {
+        players: {
+            numOfPlayers: 0,
+            player1: null,
+            player2: null
+        },
+        playerX: null,
+        playerO: null,
+        currentTurn : 0,
+        currentPlayer: null,
+        winner: null,
+        board: [
+            [null, null, null],
+            [null, null, null],
+            [null, null, null]
+        ],
+    };
+    inputPlayerNames(1, 'test');
+    inputPlayerNames(2, 'test2');
+    whoGoesFirst();
+    beginTurn();
+}
+
 function placePiece () {
     let target = event.target;
     let cellId = target.getAttribute('id');
@@ -105,8 +139,10 @@ function whoGoesFirst () {
     let first = Math.round(Math.random());
     if (first === 0) {
         gameState.playerX = gameState.players.player1;
+        gameState.playerO = gameState.players.player2;
     } else if (first === 1) {
         gameState.playerX = gameState.players.player2;
+        gameState.playerO = gameState.players.player1;
     }
 }
 
