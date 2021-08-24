@@ -74,6 +74,11 @@ function displayNames () {
 function submitNames () {
     let player1Name = document.getElementById('player1-name').value;
     let player2Name = document.getElementById('player2-name').value;
+    if (player1Name === '' || player2Name === '') {
+        document.querySelector('h1').innerText = 'Come on, they can be fake names';
+        setTimeout(() => {document.querySelector('h1').innerText = 'Tic Tac Toe';}, 3000)
+        return;
+    }
     console.log(player1Name, player2Name);
     inputPlayerNames(1, player1Name);
     inputPlayerNames(2, player2Name);
