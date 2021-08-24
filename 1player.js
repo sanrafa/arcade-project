@@ -2,7 +2,7 @@ let gameState = {
     players: {
         numOfPlayers: 0,
         player1: null,
-        player2: null
+        player2: 'COMPUTER'
     },
     playerX: null,
     playerO: null,
@@ -18,8 +18,8 @@ let gameState = {
 
 gameState.players.numOfPlayers = 2;
 
-// inputPlayerNames(1, 'test');
-// inputPlayerNames(2, 'test2');
+// inputPlayerName(1, 'test');
+// inputPlayerName(2, 'test2');
 // whoGoesFirst();
 // beginTurn();
 
@@ -62,6 +62,7 @@ startGameBtn.addEventListener('click', submitNames);
 //     console.log('hello');
 // }
 
+
 // GAME FUNCTIONS
 
 function displayNames () {
@@ -73,15 +74,13 @@ function displayNames () {
 
 function submitNames () {
     let player1Name = document.getElementById('player1-name').value;
-    let player2Name = document.getElementById('player2-name').value;
-    if (player1Name === '' || player2Name === '') {
-        document.querySelector('h1').innerText = 'Come on, they can be fake names';
+    if (player1Name === '') {
+        document.querySelector('h1').innerText = 'Come on, it can be a fake name';
         setTimeout(() => {document.querySelector('h1').innerText = 'Tic Tac Toe';}, 3000)
         return;
     }
-    console.log(player1Name, player2Name);
-    inputPlayerNames(1, player1Name);
-    inputPlayerNames(2, player2Name);
+    console.log(player1Name, gameState.players.player2);
+    inputPlayerName(1, player1Name);
     whoGoesFirst();
     displayNames();
     beginTurn();
@@ -155,11 +154,8 @@ function endGame () {
 }
 
 
-function inputPlayerNames (player, name) {
+function inputPlayerName (player, name) {
     gameState.players['player' + player] = name;
-    if (gameState.players.numOfPlayers === 1) {
-        gameState.players.player2 = 'Computer';
-    }
 }
 
 function whoGoesFirst () {
@@ -180,6 +176,7 @@ function beginTurn () {
     if (gameState.currentTurn % 2 === 0) {
         gameState.currentPlayer = 'O';
     } else { gameState.currentPlayer = 'X'};
+    checkIfCompTurn();
 }
 
 function makeMove (cell) {
@@ -321,4 +318,56 @@ function checkDiags () {
     }
 }
 
+// COMPUTER FUNCTIONS
+function checkIfCompTurn () {
+    if (gameState.playerX === 'COMPUTER' && gameState.currentPlayer === 'X') {
+        compMove();
+    } else if (gameState.playerO === 'COMPUTER' && gameState.currentPlayer === 'O') {
+        compMove();
+    } else {
+        return false;
+    }
+}
 
+function compMove () {
+    document.getElementById('board').style.pointerEvents = 'none';
+    // helper functions consisting of NPC logic...wrapped in setTimeout
+    let pick = compCheckRows();
+    setTimeout(() => {
+        makeMove(pick);
+        document.getElementById(pick).innerText = gameState.currentPlayer;
+        document.getElementById('board').style.pointerEvents = 'auto';
+        beginTurn();
+    }, 2000);
+
+     //re-enable pointer events for next turn
+}
+
+function compCheckRows () {
+    let player = gameState.currentPlayer;
+    for (let i = 0; i < 3; i++) {
+        let counter = 0;
+        for (let cell of gameState.board[i]) {
+            if (cell !== null) {
+                counter++;
+                continue;
+            }
+        }
+        if (counter < 3 && gameState.board[i][counter] === null) {
+            console.log(gameState.board[i][counter]);
+            console.log(counter);
+            switch (i) {
+                case 0:
+                    let row0 = ['A', 'B', 'C'];
+                    return row0[counter];
+                case 1:
+                    let row1 = ['D', 'E', 'F'];
+                    return row1[counter];
+                case 2:
+                    let row2 = ['G', 'H', 'I'];
+                    return row2[counter];
+            }
+        }
+    }
+    return false;
+}
