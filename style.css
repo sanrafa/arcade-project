@@ -91,10 +91,12 @@ h1 {
     font-size: 2rem;
     padding: 1rem;
     border: 1px solid red;
-    /* display none is default, toggle visible on game start */
-    /* display: none;  */
 }
 
 #player1-name {
     margin-bottom: 1rem;
+}
+
+#new-game {
+    visibility: hidden;
 }

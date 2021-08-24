@@ -36,16 +36,18 @@ let cellH = document.getElementById('H');
 let cellI = document.getElementById('I');
 
 
+function activateBoard () {
+    cellA.addEventListener('click', placePiece);
+    cellB.addEventListener('click', placePiece);
+    cellC.addEventListener('click', placePiece);
+    cellD.addEventListener('click', placePiece);
+    cellE.addEventListener('click', placePiece);
+    cellF.addEventListener('click', placePiece);
+    cellG.addEventListener('click', placePiece);
+    cellH.addEventListener('click', placePiece);
+    cellI.addEventListener('click', placePiece);
+}
 
-cellA.addEventListener('click', placePiece);
-cellB.addEventListener('click', placePiece);
-cellC.addEventListener('click', placePiece);
-cellD.addEventListener('click', placePiece);
-cellE.addEventListener('click', placePiece);
-cellF.addEventListener('click', placePiece);
-cellG.addEventListener('click', placePiece);
-cellH.addEventListener('click', placePiece);
-cellI.addEventListener('click', placePiece);
 
 
 // hide this button until after name input
@@ -80,6 +82,8 @@ function submitNames () {
     beginTurn();
     console.log(gameState); //remove before commit
     document.getElementById('name-submit').style.display = 'none';
+    activateBoard();
+    newGameBtn.style.visibility = 'visible';
 }
 
 function newGame () {
