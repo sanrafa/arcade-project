@@ -9,7 +9,22 @@ body {
 
 header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#playerX-name {
+    min-width: 20%;
+    text-align: left;
+    border: 1px dotted black;
+}
+
+#playerO-name {
+    min-width: 20%;
+    text-align: right;
+    border: 1px dotted black;
 }
 
 main {
@@ -29,7 +44,7 @@ h1 {
     margin-bottom: 2rem;
 }
 
-div {
+.cell {
     padding: 0;
     margin: 0;
     border: 1px solid black;
@@ -75,6 +90,7 @@ div {
     z-index: 3;
     font-size: 2rem;
     padding: 1rem;
+    border: 1px solid red;
     /* display none is default, toggle visible on game start */
     /* display: none;  */
 }

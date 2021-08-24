@@ -47,8 +47,11 @@ cellG.addEventListener('click', placePiece);
 cellH.addEventListener('click', placePiece);
 cellI.addEventListener('click', placePiece);
 
+
+// hide this button until after name input
 let newGameBtn = document.getElementById('new-game');
 newGameBtn.addEventListener('click', newGame);
+
 
 let startGameBtn = document.getElementById('ready');
 startGameBtn.addEventListener('click', submitNames);
@@ -59,6 +62,13 @@ startGameBtn.addEventListener('click', submitNames);
 
 // GAME FUNCTIONS
 
+function displayNames () {
+    let playerXName = document.getElementById('playerX-name');
+    let playerOName = document.getElementById('playerO-name');
+    playerXName.innerText = 'X - ' + gameState.playerX;
+    playerOName.innerText = gameState.playerO + ' - O';  
+}
+
 function submitNames () {
     let player1Name = document.getElementById('player1-name').value;
     let player2Name = document.getElementById('player2-name').value;
@@ -66,8 +76,9 @@ function submitNames () {
     inputPlayerNames(1, player1Name);
     inputPlayerNames(2, player2Name);
     whoGoesFirst();
+    displayNames();
     beginTurn();
-    console.log(gameState);
+    console.log(gameState); //remove before commit
     document.getElementById('name-submit').style.display = 'none';
 }
 
@@ -89,6 +100,7 @@ function newGame () {
         [null, null, null]
     ];
     whoGoesFirst();
+    displayNames();
     beginTurn();
 }
 
