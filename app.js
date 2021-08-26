@@ -1,6 +1,5 @@
 let gameState = {
     players: {
-        numOfPlayers: 0,
         player1: null,
         player2: null
     },
@@ -15,8 +14,6 @@ let gameState = {
         [null, null, null]
     ],
 };
-
-gameState.players.numOfPlayers = 2;
 
 // inputPlayerNames(1, 'test');
 // inputPlayerNames(2, 'test2');
@@ -157,9 +154,6 @@ function endGame () {
 
 function inputPlayerNames (player, name) {
     gameState.players['player' + player] = name;
-    if (gameState.players.numOfPlayers === 1) {
-        gameState.players.player2 = 'Computer';
-    }
 }
 
 function whoGoesFirst () {

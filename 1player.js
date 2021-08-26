@@ -1,6 +1,5 @@
 let gameState = {
     players: {
-        numOfPlayers: 0,
         player1: null,
         player2: 'COMPUTER'
     },
@@ -16,7 +15,6 @@ let gameState = {
     ],
 };
 
-gameState.players.numOfPlayers = 2;
 
 // inputPlayerName(1, 'test');
 // inputPlayerName(2, 'test2');
@@ -123,7 +121,7 @@ function placePiece () {
     }
 }
 
-function checkGameState () {
+function checkGameState () { // ** ADD TO COMP. MOVMENT FUNCTION **
     checkRows();
     checkColumns();
     checkDiags();
@@ -329,45 +327,182 @@ function checkIfCompTurn () {
     }
 }
 
-function compMove () {
-    document.getElementById('board').style.pointerEvents = 'none';
-    // helper functions consisting of NPC logic...wrapped in setTimeout
-    let pick = compCheckRows();
-    setTimeout(() => {
-        makeMove(pick);
-        document.getElementById(pick).innerText = gameState.currentPlayer;
-        document.getElementById('board').style.pointerEvents = 'auto';
-        beginTurn();
-    }, 2000);
-
-     //re-enable pointer events for next turn
-}
-
-function compCheckRows () {
-    let player = gameState.currentPlayer;
-    for (let i = 0; i < 3; i++) {
+const compLogic = {
+    0: () => { //checkRows
+        for (let i = 0; i < 3; i++) {
+            let counter = 0;
+            for (let cell of gameState.board[i]) {
+                if (cell !== null) {
+                    counter++;
+                    continue;
+                } else {
+                    break;
+                }
+            }
+            if (counter < 3 && gameState.board[i][counter] === null) {
+                // console.log(gameState.board[i][counter]);
+                // console.log(counter);
+                switch (i) {
+                    case 0:
+                        let row0 = ['A', 'B', 'C'];
+                        return row0[counter];
+                    case 1:
+                        let row1 = ['D', 'E', 'F'];
+                        return row1[counter];
+                    case 2:
+                        let row2 = ['G', 'H', 'I'];
+                        return row2[counter];
+                }
+            }
+        }
+        return false;
+    },
+    1: () => { //checkCols
+        for (let i = 0; i < 3; i++) {
+            let counter = 0;
+            for (let j = 0; j < 3; j++) { 
+                if (gameState.board[j][i] !== null){
+                    counter++;
+                    continue;
+                } else {
+                    break;
+                }
+            }
+            if (counter < 3 && gameState.board[counter][i] === null) {
+                switch (i) {
+                    case 0:
+                        let col1 = ['A', 'D', 'G'];
+                        return col1[counter];
+                    case 1:
+                        let col2 = ['B', 'E', 'H'];
+                        return col2[counter];
+                    case 2:
+                        let col3 = ['C', 'F', 'I'];
+                        return col3[counter];
+                }
+            }
+        }
+        return false;
+    },
+    2: () => {
         let counter = 0;
-        for (let cell of gameState.board[i]) {
-            if (cell !== null) {
+        for (let i = 0; i < 3; i++) {
+            if (gameState.board[i][i] !== null) {
                 counter++;
                 continue;
+            } else {
+                break;
             }
         }
-        if (counter < 3 && gameState.board[i][counter] === null) {
-            console.log(gameState.board[i][counter]);
-            console.log(counter);
-            switch (i) {
-                case 0:
-                    let row0 = ['A', 'B', 'C'];
-                    return row0[counter];
-                case 1:
-                    let row1 = ['D', 'E', 'F'];
-                    return row1[counter];
-                case 2:
-                    let row2 = ['G', 'H', 'I'];
-                    return row2[counter];
-            }
+        if (counter < 3 && gameState.board[counter][counter] === null) {
+            let diag1 = ['A', 'E', 'I'];
+            return diag1[counter];
+        } else if (counter <= 3) { // check edge cases
+            if (gameState.board[0][2] === null) {
+                return 'C';
+            } else if (gameState.board[2][0] === null) {
+                return 'G';
+            } else return false;
         }
     }
-    return false;
 }
+
+function compMove () {
+    let compMakeMove = setTimeout(() => {
+        makeMove(chosenCell);
+        document.getElementById(chosenCell).innerText = gameState.currentPlayer;
+        document.getElementById('board').style.pointerEvents = 'auto';
+        beginTurn();
+    }, 1500);
+    document.getElementById('board').style.pointerEvents = 'none';
+    let randNum = Math.round(Math.random() * 2);
+    let generatedMove = compLogic[randNum]();
+    let chosenCell;
+    if (generatedMove) {
+        chosenCell = generatedMove;
+        compMakeMove;
+    } else {
+        compMove();
+    }
+}
+
+// function compCheckRows () {
+//     for (let i = 0; i < 3; i++) {
+//         let counter = 0;
+//         for (let cell of gameState.board[i]) {
+//             if (cell !== null) {
+//                 counter++;
+//                 continue;
+//             } else {
+//                 break;
+//             }
+//         }
+//         if (counter < 3 && gameState.board[i][counter] === null) {
+//             // console.log(gameState.board[i][counter]);
+//             // console.log(counter);
+//             switch (i) {
+//                 case 0:
+//                     let row0 = ['A', 'B', 'C'];
+//                     return row0[counter];
+//                 case 1:
+//                     let row1 = ['D', 'E', 'F'];
+//                     return row1[counter];
+//                 case 2:
+//                     let row2 = ['G', 'H', 'I'];
+//                     return row2[counter];
+//             }
+//         }
+//     }
+//     return false;
+// }
+
+// function compCheckCols () { //board[rows][cols]
+//     for (let i = 0; i < 3; i++) { // this tracks cols
+//         let counter = 0;
+//         for (let j = 0; j < 3; j++) { //this tracks rows
+//             if (gameState.board[j][i] !== null){
+//                 counter++;
+//                 continue;
+//             } else {
+//                 break;
+//             }
+//         }
+//         if (counter < 3 && gameState.board[counter][i] === null) {
+//             switch (i) {
+//                 case 0:
+//                     let col1 = ['A', 'D', 'G'];
+//                     return col1[counter];
+//                 case 1:
+//                     let col2 = ['B', 'E', 'H'];
+//                     return col2[counter];
+//                 case 2:
+//                     let col3 = ['C', 'F', 'I'];
+//                     return col3[counter];
+//             }
+//         }
+//     }
+//     return false;
+// }
+
+// function compCheckDiags () {
+//     let counter = 0;
+//     for (let i = 0; i < 3; i++) {
+//         if (gameState.board[i][i] !== null) {
+//             counter++;
+//             continue;
+//         } else {
+//             break;
+//         }
+//     }
+//     if (counter < 3 && gameState.board[counter][counter] === null) {
+//         let diag1 = ['A', 'E', 'I'];
+//         return diag1[counter];
+//     } else if (counter <= 3) { // check edge cases
+//         if (gameState.board[0][2] === null) {
+//             return 'C';
+//         } else if (gameState.board[2][0] === null) {
+//             return 'G';
+//         } else return false;
+//     }
+// }
+
