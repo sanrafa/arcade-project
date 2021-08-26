@@ -407,16 +407,21 @@ const compLogic = {
     }
 }
 
+// use checkGameState() helper functions as template for comp. to make informed moves
+
 function compMove () {
     let compMakeMove = setTimeout(() => {
         makeMove(chosenCell);
         document.getElementById(chosenCell).innerText = gameState.currentPlayer;
+        checkGameState();
         document.getElementById('board').style.pointerEvents = 'auto';
         beginTurn();
     }, 1500);
     document.getElementById('board').style.pointerEvents = 'none';
     let randNum = Math.round(Math.random() * 2);
+    console.log(randNum);
     let generatedMove = compLogic[randNum]();
+    console.log(generatedMove);
     let chosenCell;
     if (generatedMove) {
         chosenCell = generatedMove;
