@@ -170,7 +170,10 @@ function whoGoesFirst () {
 function beginTurn () {
     if (gameState.currentTurn < 9) {
         gameState.currentTurn += 1;
-    } else { throw new Error ('The game has ended')};
+    } else {
+        console.log('The game has ended');
+        return;
+    };
     if (gameState.currentTurn % 2 === 0) {
         gameState.currentPlayer = 'O';
     } else { gameState.currentPlayer = 'X'};
@@ -263,7 +266,6 @@ function checkRows () {
             return;
         }
     }
-    console.log('No winner yet');
     return;
 }
 
@@ -283,7 +285,6 @@ function checkColumns () {
             return;
         }
     }
-    console.log('No winner yet');
     return;
 }
 
@@ -310,7 +311,6 @@ function checkDiags () {
             console.log(`Player ${player} has won!`);
             return;
         } else {
-            console.log('No winner yet');
             return;
         }  
     }
@@ -318,9 +318,9 @@ function checkDiags () {
 
 // COMPUTER FUNCTIONS
 function checkIfCompTurn () {
-    if (gameState.playerX === 'COMPUTER' && gameState.currentPlayer === 'X') {
+    if (gameState.playerX === 'COMPUTER' && gameState.currentPlayer === 'X' && gameState.winner === null) {
         compMove();
-    } else if (gameState.playerO === 'COMPUTER' && gameState.currentPlayer === 'O') {
+    } else if (gameState.playerO === 'COMPUTER' && gameState.currentPlayer === 'O' && gameState.winner === null) {
         compMove();
     } else {
         return false;
@@ -328,6 +328,7 @@ function checkIfCompTurn () {
 }
 
 const compLogic = {
+    cellChoice: '',
     0: () => { //checkRows
         for (let i = 0; i < 3; i++) {
             let counter = 0;
@@ -345,17 +346,23 @@ const compLogic = {
                 switch (i) {
                     case 0:
                         let row0 = ['A', 'B', 'C'];
-                        return row0[counter];
+                        compLogic.cellChoice = row0[counter];
+                        break;
                     case 1:
                         let row1 = ['D', 'E', 'F'];
-                        return row1[counter];
+                        compLogic.cellChoice = row1[counter];
+                        break;
                     case 2:
                         let row2 = ['G', 'H', 'I'];
-                        return row2[counter];
+                        compLogic.cellChoice = row2[counter];
+                        break;
                 }
+                break;
+            } else {
+                return false;
             }
         }
-        return false;
+        return compLogic.cellChoice;
     },
     1: () => { //checkCols
         for (let i = 0; i < 3; i++) {
@@ -372,19 +379,25 @@ const compLogic = {
                 switch (i) {
                     case 0:
                         let col1 = ['A', 'D', 'G'];
-                        return col1[counter];
+                        compLogic.cellChoice = col1[counter];
+                        break;
                     case 1:
                         let col2 = ['B', 'E', 'H'];
-                        return col2[counter];
+                        compLogic.cellChoice = col2[counter];
+                        break;
                     case 2:
                         let col3 = ['C', 'F', 'I'];
-                        return col3[counter];
+                        compLogic.cellChoice = col3[counter];
+                        break;
                 }
+                break;
+            } else {
+                return false;
             }
         }
-        return false;
+        return compLogic.cellChoice;
     },
-    2: () => {
+    2: () => { //checkDiags
         let counter = 0;
         for (let i = 0; i < 3; i++) {
             if (gameState.board[i][i] !== null) {
@@ -396,18 +409,100 @@ const compLogic = {
         }
         if (counter < 3 && gameState.board[counter][counter] === null) {
             let diag1 = ['A', 'E', 'I'];
-            return diag1[counter];
+            compLogic.cellChoice = diag1[counter];
         } else if (counter <= 3) { // check edge cases
             if (gameState.board[0][2] === null) {
-                return 'C';
+                compLogic.cellChoice = 'C';
             } else if (gameState.board[2][0] === null) {
-                return 'G';
+                compLogic.cellChoice = 'G';
             } else return false;
         }
+        return compLogic.cellChoice;
     }
 }
 
 // use checkGameState() helper functions as template for comp. to make informed moves
+
+function compMapToBoard (cell) {
+    let docBoard = [ // may wish to add this to gameState
+        ['A','B', 'C'],
+        ['D', 'E', 'F'],
+        ['G', 'H', 'I']
+    ];
+    let option;
+    for (let row of docBoard) {
+        if (row.includes(cell)) {
+            option = [docBoard.indexOf(row), row.indexOf(cell)];
+            break;
+        } else {
+            continue;
+        }
+    }
+    return option;
+}
+
+function compCheckRow (optionArr) {
+    let compRow = optionArr[0];
+    let counter = 0;
+    for (let cell of gameState.board[compRow]) {
+        if (cell === gameState.currentPlayer) {
+            counter++;
+        } else {
+            continue;
+        }
+    }
+    return counter;
+}
+
+function compCheckCol (optionArr) {
+    let compCol = optionArr[1];
+    let counter = 0;
+    for (let i = 0; i < 3; i++) {
+        if (gameState.board[i][compCol] === gameState.currentPlayer) {
+            counter ++;
+        } else {
+            continue;
+        }
+    }
+    return counter;
+}
+
+function compCheckDiag (optionArr) {
+    let counter = 0;
+    for (let i = 0; i < 3; i++) {
+        if (gameState.board[i][i] === gameState.currentPlayer) {
+            counter++;
+        } else {
+            continue;
+        }
+    }
+    if (gameState.board[0][2] === gameState.currentPlayer) {
+        counter++;
+    }
+    if (gameState.board[2][0] === gameState.currentPlayer) {
+        counter++;
+    }
+    return counter;
+}
+
+function compCheckPossMoves (possMove) {
+        let movesMade = 0;
+        let cellLocation = compMapToBoard(possMove);
+        let probOfWin = 0;
+        movesMade += compCheckRow(cellLocation);
+        movesMade += compCheckCol(cellLocation);
+        movesMade += compCheckDiag(cellLocation);
+        probOfWin = (movesMade / 11) * 100;
+        console.log('Probability: ' + probOfWin);
+        if (probOfWin >= 15) {
+            return true;
+        } else {
+            return false;
+        }
+    // ex. 'E' - option = [1,1]
+    // let compRow = option[0];
+    // let compCol = option[1]; // so chosen field will be gameState.board[compRow][compCol]
+}
 
 function compMove () {
     let compMakeMove = setTimeout(() => {
@@ -416,18 +511,28 @@ function compMove () {
         checkGameState();
         document.getElementById('board').style.pointerEvents = 'auto';
         beginTurn();
-    }, 1500);
+    }, 1000);
     document.getElementById('board').style.pointerEvents = 'none';
     let randNum = Math.round(Math.random() * 2);
-    console.log(randNum);
     let generatedMove = compLogic[randNum]();
     console.log(generatedMove);
     let chosenCell;
     if (generatedMove) {
-        chosenCell = generatedMove;
+        if (gameState.currentTurn >= 5 && gameState.currentTurn < 9) {
+            let prob = compCheckPossMoves(generatedMove);
+            if (prob === false) {
+                return compMove();
+            } else {
+                chosenCell = generatedMove;
+                compMakeMove;
+                return;
+            }
+        }
+        chosenCell = generatedMove; // use generatedMove in checker functions - compCheckPossMoves(generatedMove)
         compMakeMove;
+        return;
     } else {
-        compMove();
+        return compMove();
     }
 }
 
