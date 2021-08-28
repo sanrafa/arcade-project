@@ -494,25 +494,6 @@ function compCheckDiag (optionArr) {
     return counter;
 }
 
-function compCheckPossMoves (possMove) {
-        let movesMade = 0;
-        let cellLocation = compMapToBoard(possMove);
-        let probOfWin = 0;
-        movesMade += compCheckRow(cellLocation);
-        movesMade += compCheckCol(cellLocation);
-        movesMade += compCheckDiag(cellLocation);
-        probOfWin = (movesMade / 11) * 100;
-        console.log('Probability: ' + probOfWin);
-        if (probOfWin >= 15) {
-            return true;
-        } else {
-            return false;
-        }
-    // ex. 'E' - option = [1,1]
-    // let compRow = option[0];
-    // let compCol = option[1]; // so chosen field will be gameState.board[compRow][compCol]
-}
-
 function compMove () {
     let compMakeMove = setTimeout(() => {
         makeMove(chosenCell);
@@ -520,6 +501,7 @@ function compMove () {
         checkGameState();
         document.getElementById('board').style.pointerEvents = 'auto';
         beginTurn();
+        return;
     }, 1000);
     document.getElementById('board').style.pointerEvents = 'none';
     let randNum = Math.round(Math.random() * 2);
@@ -527,16 +509,6 @@ function compMove () {
     console.log(generatedMove);
     let chosenCell;
     if (generatedMove) {
-        if (gameState.currentTurn >= 5 && gameState.currentTurn < 9) {
-            let prob = compCheckPossMoves(generatedMove);
-            if (prob === false) {
-                return compMove();
-            } else {
-                chosenCell = generatedMove;
-                compMakeMove;
-                return;
-            }
-        }
         chosenCell = generatedMove; // use generatedMove in checker functions - compCheckPossMoves(generatedMove)
         compMakeMove;
         return;
