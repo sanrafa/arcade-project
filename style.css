@@ -1,102 +1,38 @@
 body {
-    min-height: 100%;
-    min-width: 99%;
+    background-color: black;
+    color: white;
+}
+
+main {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: auto;
 }
 
-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+a {
+    text-decoration: none;
+    padding: 2rem;
+    border: 4px double white;
+    border-radius: 25px;
+    background-color: white;
+    color: black;
+    width: 25%;
+    text-align: center;
+    margin-bottom: 10%;
+    font-size: 1.5rem;
 }
 
-#playerX-name {
-    min-width: 20%;
-    text-align: left;
-    border: 1px dotted black;
+a:hover {
+    background-color: black;
+    color: white;
 }
 
-#playerO-name {
-    min-width: 20%;
-    text-align: right;
-    border: 1px dotted black;
-}
-
-main {
-    width: 70vw;
-    height: 75vh;
-    display: grid; 
-    grid-template-columns: 1fr 1fr 1fr; 
-    grid-template-rows: 1fr 1fr 1fr; 
-    gap: 4px 4px; 
-    grid-template-areas: 
-    "A B C"
-    "D E F"
-    "G H I"; 
+a:visited {
+    text-decoration: none;
 }
 
 h1 {
-    margin-bottom: 2rem;
-}
-
-.cell {
-    padding: 0;
-    margin: 0;
-    border: 1px solid black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 4rem;
-}
-
-#A {
-    grid-area: A;
-}
-#B {
-    grid-area: B;
-}
-#C {
-    grid-area: C;
-}
-#D {
-    grid-area: D;
-}
-#E {
-    grid-area: E;
-}
-#F {
-    grid-area: F;
-}
-#G {
-    grid-area: G;
-}
-#H {
-    grid-area: H;
-}
-#I {
-    grid-area: I;
-}
-
-#name-submit {
-    position: absolute;
-    top: 40%;
-    width: 50%;
-    background-color: white;
-    z-index: 3;
-    font-size: 2rem;
-    padding: 1rem;
-    border: 1px solid red;
-}
-
-#player1-name {
-    margin-bottom: 1rem;
-}
-
-#new-game {
-    visibility: hidden;
+    font-size: 5rem;
 }
