@@ -5,6 +5,11 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.938);
+    color: white;
+    position: absolute;
 }
 
 header {
@@ -12,23 +17,39 @@ header {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    width: 90vw;
+    padding: 1rem;
+}
+
+h1 {
+    font-size: 3rem;
+    margin: 0;
+    text-align: center;
+}
+
+.playerNames {
+    min-width: 30%;
+    text-align: left;
+    border: 2px solid #4036c5;
+    border-radius: 5px;
+    padding: 1rem;
+    font-size: 1.8rem;
+    background-color: #bbbbbb;
+    color: black;
+    box-shadow: -3px 5px 10px #ffffff7a;
 }
 
 #playerX-name {
-    min-width: 20%;
     text-align: left;
-    border: 1px dotted black;
 }
 
 #playerO-name {
-    min-width: 20%;
+    box-shadow: 3px 5px 10px #ffffff7a;
     text-align: right;
-    border: 1px dotted black;
 }
 
 main {
-    width: 70vw;
+    width: 82vw;
     height: 75vh;
     display: grid; 
     grid-template-columns: 1fr 1fr 1fr; 
@@ -40,18 +61,21 @@ main {
     "G H I"; 
 }
 
-h1 {
-    margin-bottom: 2rem;
-}
-
 .cell {
     padding: 0;
-    margin: 0;
-    border: 1px solid black;
+    margin: 0.5rem;
+    background-color: #2f3a3a;
+    background-image: linear-gradient(150deg, #2f3a3a 0%, #9599E2 50%);
+    backdrop-filter: blur(20px);
+    border: 1px solid white;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 4rem;
+    font-size: 7rem;
+    color: black;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.418);
+    font-weight: bold;
 }
 
 #A {
@@ -86,17 +110,87 @@ h1 {
     position: absolute;
     top: 40%;
     width: 50%;
-    background-color: white;
     z-index: 3;
     font-size: 2rem;
     padding: 1rem;
-    border: 1px solid red;
+    border: 2px double white;
+    border-radius: 10px;
+}
+
+.namePopup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: black;
+    color: white;
+}
+
+label {
+    margin-bottom: 1rem;
 }
 
 #player1-name {
     margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+#ready {
+    width: 25%;
+    background-color: gray;
+    color: black;
+    border-radius: 25px;
+}
+
+#ready:hover {
+    background-color: hsl(0, 0%, 20%);
+    color: white;
 }
 
 #new-game {
     visibility: hidden;
+    font-size: 1.1rem;
+    margin-left: -10%;  
+}
+
+#new-game:hover {
+    background-color: hsl(0, 0%, 20%);
+    color: hsl(230, 100%, 80%);
+}
+
+#exit-game {
+    font-size: 1.1rem;
+    margin-left: 10%;
+}
+
+#exit-game:hover {
+    background-color: hsl(0, 0%, 20%);
+    color: hsl(0, 100%, 30%);
+}
+
+.menu {
+    margin-bottom: 2%;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+#player1-name {
+    width: 50%;
+    text-align: center;
+}
+
+@media screen and (max-width: 750px) {
+    #playerX-name {
+        font-size: 1.2rem;
+    }
+    #playerO-name {
+        font-size: 1.2rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
 }
