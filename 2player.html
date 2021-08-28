@@ -6,28 +6,27 @@
        <link rel="stylesheet" href="./2p-style.css"> 
     </head>
     <body>
-        <div id="name-submit">
+        <div id="name-submit" class="namePopup">
             <form name="player-input">
                 <label for="player1-name">PLAYER 1</label>
                 <input type="text" id="player1-name">
-                <br>
                 <label for="player2-name">PLAYER 2</label>
                 <input type="text" id="player2-name">
                 <button type="button" id="ready">READY</button>
             </form>
         </div>
         <header>
-            <div id="playerX-name">
+            <div id="playerX-name" class="playerNames">
                 X
             </div>
             <h1>Tic Tac Toe</h1>
-            <div id="playerO-name">
+            <div id="playerO-name" class="playerNames">
                 O
             </div>
         </header>
         <div>
             <button type="button" id="new-game">NEW GAME</button>
-            <button type="button" onclick="location.href='index.html';">EXIT GAME</button>
+            <button type="button" onclick="location.href='index.html';" id="exit-game">EXIT GAME</button>
         </div>
         <main id="board">
             <div id="A" class="cell"></div>
