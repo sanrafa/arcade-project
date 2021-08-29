@@ -84,8 +84,9 @@ function submitNames () {
 }
 
 function newGame () {
-    document.getElementById('playerO-name').style.visibility = 'visible';
-    document.getElementById('playerX-name').style.visibility = 'visible';
+    document.querySelector('header').style.justifyContent = 'space-between';
+    document.getElementById('playerO-name').style.display = 'block';
+    document.getElementById('playerX-name').style.display = 'block';
     let cells = document.getElementsByClassName('cell');
     for (let cell of cells) {
         cell.innerText = '';
@@ -142,13 +143,13 @@ function endGame () {
     declareWinner(gameState.winner);
     let winner = gameState.winner;
     document.getElementById('board').style.visibility = 'hidden';
-    document.getElementById('playerO-name').style.visibility = 'hidden';
-    document.getElementById('playerX-name').style.visibility = 'hidden';
+    document.getElementById('playerO-name').style.display = 'none';
+    document.getElementById('playerX-name').style.display = 'none';
     if (winner !== null) {
-        document.querySelector('h1').style.fontSize = '2rem';
+        document.querySelector('header').style.justifyContent = 'center';
         document.querySelector('h1').innerText = `${winner} has won the game!`;
     } else {
-        document.querySelector('h1').style.fontSize = '2rem';
+        document.querySelector('header').style.justifyContent = 'center';
         document.querySelector('h1').innerText = "Uh oh - there's a draw!";
     }
 }
