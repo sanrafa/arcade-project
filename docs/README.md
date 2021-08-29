@@ -1,5 +1,6 @@
 # Arcade Project - Tic-Tac-Toe
 
+Link to this demo on [Netlify](https://romantic-jackson-c3deca.netlify.app/)
 ## Requirements
 ### 2 Players
 - players must be able to input their names and see them displayed
