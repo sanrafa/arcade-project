@@ -15,12 +15,6 @@ let gameState = {
     ],
 };
 
-
-// inputPlayerName(1, 'test');
-// inputPlayerName(2, 'test2');
-// whoGoesFirst();
-// beginTurn();
-
 //  EVENT LISTENERS
 
 let cellA = document.getElementById('A');
@@ -46,9 +40,7 @@ function activateBoard () {
     cellI.addEventListener('click', placePiece);
 }
 
-
-
-// hide this button until after name input
+// BUTTONS
 let newGameBtn = document.getElementById('new-game');
 newGameBtn.addEventListener('click', newGame);
 
@@ -57,12 +49,11 @@ let startGameBtn = document.getElementById('ready');
 startGameBtn.addEventListener('click', submitNames);
 
 
-// function testClick () {
-//     console.log('hello');
-// }
-
-
 // GAME FUNCTIONS
+
+function inputPlayerName (player, name) {
+    gameState.players['player' + player] = name;
+}
 
 function displayNames () {
     let playerXName = document.getElementById('playerX-name');
@@ -83,12 +74,10 @@ function submitNames () {
         return;
     }
     player1Name = player1Name.toUpperCase();
-    console.log(player1Name, gameState.players.player2);
     inputPlayerName(1, player1Name);
     whoGoesFirst();
     displayNames();
     beginTurn();
-    console.log(gameState); //remove before commit
     document.getElementById('name-submit').style.display = 'none';
     activateBoard();
     newGameBtn.style.visibility = 'visible';
@@ -128,7 +117,7 @@ function placePiece () {
     }
 }
 
-function checkGameState () { // ** ADD TO COMP. MOVMENT FUNCTION **
+function checkGameState () {
     checkRows();
     checkColumns();
     checkDiags();
@@ -160,11 +149,6 @@ function endGame () {
     }
 }
 
-
-function inputPlayerName (player, name) {
-    gameState.players['player' + player] = name;
-}
-
 function whoGoesFirst () {
     let first = Math.round(Math.random());
     if (first === 0) {
@@ -180,7 +164,6 @@ function beginTurn () {
     if (gameState.currentTurn < 9) {
         gameState.currentTurn += 1;
     } else {
-        console.log('The game has ended');
         return;
     };
     if (gameState.currentTurn % 2 === 0) {
@@ -190,7 +173,6 @@ function beginTurn () {
 }
 
 function makeMove (cell) {
-    // in real game cell = event.target.id
     const symbol = gameState.currentPlayer;
     switch (cell) { // switch updates cell according to id
         case 'A':
@@ -271,7 +253,6 @@ function checkRows () {
         }
         if (counter === 3) {
             gameState.winner = player;
-            console.log(`Player ${player} has won!`);
             return;
         }
     }
@@ -290,7 +271,6 @@ function checkColumns () {
         }
         if (counter === 3) {
             gameState.winner = player;
-            console.log(`Player ${player} has won!`);
             return;
         }
     }
@@ -308,7 +288,6 @@ function checkDiags () {
     }
     if (counter === 3) {
         gameState.winner = player;
-        console.log(`Player ${player} has won!`);
         return;
     } else {
         if ( //check diagonal from right
@@ -317,7 +296,6 @@ function checkDiags () {
             gameState.board[2][0] === player
         ) {
             gameState.winner = player;
-            console.log(`Player ${player} has won!`);
             return;
         } else {
             return;
@@ -350,8 +328,6 @@ const compLogic = {
                 }
             }
             if (counter < 3 && gameState.board[i][counter] === null) {
-                // console.log(gameState.board[i][counter]);
-                // console.log(counter);
                 switch (i) {
                     case 0:
                         let row0 = ['A', 'B', 'C'];
@@ -430,70 +406,6 @@ const compLogic = {
     }
 }
 
-// use checkGameState() helper functions as template for comp. to make informed moves
-
-function compMapToBoard (cell) {
-    let docBoard = [ // may wish to add this to gameState
-        ['A','B', 'C'],
-        ['D', 'E', 'F'],
-        ['G', 'H', 'I']
-    ];
-    let option;
-    for (let row of docBoard) {
-        if (row.includes(cell)) {
-            option = [docBoard.indexOf(row), row.indexOf(cell)];
-            break;
-        } else {
-            continue;
-        }
-    }
-    return option;
-}
-
-function compCheckRow (optionArr) {
-    let compRow = optionArr[0];
-    let counter = 0;
-    for (let cell of gameState.board[compRow]) {
-        if (cell === gameState.currentPlayer) {
-            counter++;
-        } else {
-            continue;
-        }
-    }
-    return counter;
-}
-
-function compCheckCol (optionArr) {
-    let compCol = optionArr[1];
-    let counter = 0;
-    for (let i = 0; i < 3; i++) {
-        if (gameState.board[i][compCol] === gameState.currentPlayer) {
-            counter ++;
-        } else {
-            continue;
-        }
-    }
-    return counter;
-}
-
-function compCheckDiag (optionArr) {
-    let counter = 0;
-    for (let i = 0; i < 3; i++) {
-        if (gameState.board[i][i] === gameState.currentPlayer) {
-            counter++;
-        } else {
-            continue;
-        }
-    }
-    if (gameState.board[0][2] === gameState.currentPlayer) {
-        counter++;
-    }
-    if (gameState.board[2][0] === gameState.currentPlayer) {
-        counter++;
-    }
-    return counter;
-}
-
 function compMove () {
     let compMakeMove = setTimeout(() => {
         makeMove(chosenCell);
@@ -506,94 +418,12 @@ function compMove () {
     document.getElementById('board').style.pointerEvents = 'none';
     let randNum = Math.round(Math.random() * 2);
     let generatedMove = compLogic[randNum]();
-    console.log(generatedMove);
     let chosenCell;
     if (generatedMove) {
-        chosenCell = generatedMove; // use generatedMove in checker functions - compCheckPossMoves(generatedMove)
+        chosenCell = generatedMove;
         compMakeMove;
         return;
     } else {
         return compMove();
     }
 }
-
-// function compCheckRows () {
-//     for (let i = 0; i < 3; i++) {
-//         let counter = 0;
-//         for (let cell of gameState.board[i]) {
-//             if (cell !== null) {
-//                 counter++;
-//                 continue;
-//             } else {
-//                 break;
-//             }
-//         }
-//         if (counter < 3 && gameState.board[i][counter] === null) {
-//             // console.log(gameState.board[i][counter]);
-//             // console.log(counter);
-//             switch (i) {
-//                 case 0:
-//                     let row0 = ['A', 'B', 'C'];
-//                     return row0[counter];
-//                 case 1:
-//                     let row1 = ['D', 'E', 'F'];
-//                     return row1[counter];
-//                 case 2:
-//                     let row2 = ['G', 'H', 'I'];
-//                     return row2[counter];
-//             }
-//         }
-//     }
-//     return false;
-// }
-
-// function compCheckCols () { //board[rows][cols]
-//     for (let i = 0; i < 3; i++) { // this tracks cols
-//         let counter = 0;
-//         for (let j = 0; j < 3; j++) { //this tracks rows
-//             if (gameState.board[j][i] !== null){
-//                 counter++;
-//                 continue;
-//             } else {
-//                 break;
-//             }
-//         }
-//         if (counter < 3 && gameState.board[counter][i] === null) {
-//             switch (i) {
-//                 case 0:
-//                     let col1 = ['A', 'D', 'G'];
-//                     return col1[counter];
-//                 case 1:
-//                     let col2 = ['B', 'E', 'H'];
-//                     return col2[counter];
-//                 case 2:
-//                     let col3 = ['C', 'F', 'I'];
-//                     return col3[counter];
-//             }
-//         }
-//     }
-//     return false;
-// }
-
-// function compCheckDiags () {
-//     let counter = 0;
-//     for (let i = 0; i < 3; i++) {
-//         if (gameState.board[i][i] !== null) {
-//             counter++;
-//             continue;
-//         } else {
-//             break;
-//         }
-//     }
-//     if (counter < 3 && gameState.board[counter][counter] === null) {
-//         let diag1 = ['A', 'E', 'I'];
-//         return diag1[counter];
-//     } else if (counter <= 3) { // check edge cases
-//         if (gameState.board[0][2] === null) {
-//             return 'C';
-//         } else if (gameState.board[2][0] === null) {
-//             return 'G';
-//         } else return false;
-//     }
-// }
-

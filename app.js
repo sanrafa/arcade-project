@@ -15,11 +15,6 @@ let gameState = {
     ],
 };
 
-// inputPlayerNames(1, 'test');
-// inputPlayerNames(2, 'test2');
-// whoGoesFirst();
-// beginTurn();
-
 //  EVENT LISTENERS
 
 let cellA = document.getElementById('A');
@@ -47,19 +42,20 @@ function activateBoard () {
 
 
 
-// hide this button until after name input
+// BUTTONS
 let newGameBtn = document.getElementById('new-game');
 newGameBtn.addEventListener('click', newGame);
-
 
 let startGameBtn = document.getElementById('ready');
 startGameBtn.addEventListener('click', submitNames);
 
-// function testClick () {
-//     console.log('hello');
-// }
+//EXIT GAME uses inline onclick function
 
 // GAME FUNCTIONS
+
+function inputPlayerNames (player, name) {
+    gameState.players['player' + player] = name;
+}
 
 function displayNames () {
     let playerXName = document.getElementById('playerX-name');
@@ -80,7 +76,6 @@ function submitNames () {
         }, 3000)
         return;
     }
-    console.log(player1Name, player2Name);
     player1Name = player1Name.toUpperCase();
     player2Name = player2Name.toUpperCase();
     inputPlayerNames(1, player1Name);
@@ -88,7 +83,6 @@ function submitNames () {
     whoGoesFirst();
     displayNames();
     beginTurn();
-    console.log(gameState); //remove before commit
     document.getElementById('name-submit').style.display = 'none';
     activateBoard();
     newGameBtn.style.visibility = 'visible';
@@ -160,11 +154,6 @@ function endGame () {
     }
 }
 
-
-function inputPlayerNames (player, name) {
-    gameState.players['player' + player] = name;
-}
-
 function whoGoesFirst () {
     let first = Math.round(Math.random());
     if (first === 0) {
@@ -186,7 +175,6 @@ function beginTurn () {
 }
 
 function makeMove (cell) {
-    // in real game cell = event.target.id
     const symbol = gameState.currentPlayer;
     switch (cell) { // switch updates cell according to id
         case 'A':
@@ -267,11 +255,9 @@ function checkRows () {
         }
         if (counter === 3) {
             gameState.winner = player;
-            console.log(`Player ${player} has won!`);
             return;
         }
     }
-    console.log('No winner yet');
     return;
 }
 
@@ -287,11 +273,9 @@ function checkColumns () {
         }
         if (counter === 3) {
             gameState.winner = player;
-            console.log(`Player ${player} has won!`);
             return;
         }
     }
-    console.log('No winner yet');
     return;
 }
 
@@ -306,7 +290,6 @@ function checkDiags () {
     }
     if (counter === 3) {
         gameState.winner = player;
-        console.log(`Player ${player} has won!`);
         return;
     } else {
         if ( //check diagonal from right
@@ -315,10 +298,8 @@ function checkDiags () {
             gameState.board[2][0] === player
         ) {
             gameState.winner = player;
-            console.log(`Player ${player} has won!`);
             return;
         } else {
-            console.log('No winner yet');
             return;
         }  
     }
