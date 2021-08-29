@@ -84,6 +84,8 @@ function submitNames () {
 }
 
 function newGame () {
+    document.getElementById('playerO-name').style.visibility = 'visible';
+    document.getElementById('playerX-name').style.visibility = 'visible';
     let cells = document.getElementsByClassName('cell');
     for (let cell of cells) {
         cell.innerText = '';
@@ -140,6 +142,8 @@ function endGame () {
     declareWinner(gameState.winner);
     let winner = gameState.winner;
     document.getElementById('board').style.visibility = 'hidden';
+    document.getElementById('playerO-name').style.visibility = 'hidden';
+    document.getElementById('playerX-name').style.visibility = 'hidden';
     if (winner !== null) {
         document.querySelector('h1').style.fontSize = '2rem';
         document.querySelector('h1').innerText = `${winner} has won the game!`;
@@ -168,7 +172,13 @@ function beginTurn () {
     };
     if (gameState.currentTurn % 2 === 0) {
         gameState.currentPlayer = 'O';
-    } else { gameState.currentPlayer = 'X'};
+        document.getElementById('playerO-name').style.fontWeight = '700';
+        document.getElementById('playerX-name').style.fontWeight = '400';
+    } else { 
+        gameState.currentPlayer = 'X';
+        document.getElementById('playerO-name').style.fontWeight = '400';
+        document.getElementById('playerX-name').style.fontWeight = '700';
+    }
     checkIfCompTurn();
 }
 

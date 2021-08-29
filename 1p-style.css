@@ -10,6 +10,7 @@ body {
     background-color: rgba(0, 0, 0, 0.938);
     color: white;
     position: absolute;
+    font-family: 'Oswald', sans-serif;
 }
 
 header {
@@ -72,7 +73,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 7rem;
+    font-size: 5rem;
     color: black;
     text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.418);
     font-weight: bold;
